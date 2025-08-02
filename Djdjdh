@@ -1,0 +1,198 @@
+@echo off
+:: Enable ANSI escape codes (works on Windows 10+)
+:: This will enable colors in Windows terminal
+for /f "delims=" %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
+
+:: Define colors (ANSI escape sequences)
+set "CYAN=%ESC%[96m"
+set "YELLOW=%ESC%[93m"
+set "GREEN=%ESC%[92m"
+set "RED=%ESC%[91m"
+set "MAGENTA=%ESC%[95m"
+set "RESET=%ESC%[0m"
+
+:: Main entry point
+call :MainMenu
+exit /b
+
+:: -------------------
+:MainMenu
+cls
+echo %CYAN%╔════════════════════════════════════════════════╗
+echo ║            🔒 USB PASSWORD PROTECTION            ║
+echo ╠════════════════════════════════════════════════╣%RESET%
+echo ║                                                ║
+echo %YELLOW%║  [1] 🔑 User Access                           ║
+echo │  [2] ⚙️  Options                              ║
+echo │  [3] 📜 Activity Logs                         ║
+echo │  [4] ❓ Help / About                          ║
+echo │  [5] ❌ Exit                                 ║
+echo ║                                                ║
+echo │  ▶ Enter choice and press [Enter]:           ║%RESET%
+set /p choice=^> 
+if "%choice%"=="1" goto UserAccess
+if "%choice%"=="2" goto OptionsMenu
+if "%choice%"=="3" goto ActivityLogs
+if "%choice%"=="4" goto HelpAbout
+if "%choice%"=="5" exit /b
+goto MainMenu
+
+:: -------------------
+:UserAccess
+cls
+echo %CYAN%╔════════════════════════════════════════════════╗
+echo ║                  👤 USER ACCESS                  ║
+echo ╠════════════════════════════════════════════════╣%RESET%
+echo ║                                                ║
+echo ║           Enter your password below:            ║
+echo ║                                                ║
+set /p "password=%YELLOW%[ ______________ ] %RESET%"
+echo ║                                                ║
+echo %MAGENTA%║   (Hint: type <(Backup)> for backup)          ║%RESET%
+echo ╚════════════════════════════════════════════════╝
+if /i "%password%"=="<(Backup)>" goto BackupPassword
+:: Here add your password check
+echo %RED%Password entered: %password% (not verified)%RESET%
+pause
+goto MainMenu
+
+:: -------------------
+:BackupPassword
+cls
+echo %CYAN%╔════════════════════════════════════════════════╗
+echo ║                 🔐 BACKUP PASSWORD               ║
+echo ╠════════════════════════════════════════════════╣%RESET%
+echo ║                                                ║
+set /p "backupPass=%YELLOW%Enter your backup password: %RESET%"
+echo ║                                                ║
+echo ║           Press [Enter] when done               ║
+echo ╚════════════════════════════════════════════════╝
+:: Add backup password verification here
+echo %RED%Backup password entered: %backupPass% (not verified)%RESET%
+pause
+goto MainMenu
+
+:: -------------------
+:AdminLogin
+cls
+echo %CYAN%╔════════════════════════════════════════════════╗
+echo ║                   🛡️ ADMIN LOGIN                 ║
+echo ╠════════════════════════════════════════════════╣%RESET%
+echo ║                                                ║
+set /p "adminPass=%YELLOW%Enter admin password: %RESET%"
+echo ║                                                ║
+echo ║           Press [Enter] when done               ║
+echo ╚════════════════════════════════════════════════╝
+:: Add admin password check here
+echo %RED%Admin password entered: %adminPass% (not verified)%RESET%
+pause
+goto MainMenu
+
+:: -------------------
+:AccessGranted
+cls
+echo %GREEN%╔════════════════════════════════════════════════╗
+echo ║                  ✅ ACCESS GRANTED               ║
+echo ╠════════════════════════════════════════════════╣%RESET%
+echo ║                                                ║
+echo ║           Welcome! You have access to           ║
+echo ║            the protected content.               ║
+echo ║                                                ║
+echo ║           Press any key to continue...          ║
+echo ╚════════════════════════════════════════════════╝
+pause >nul
+goto MainMenu
+
+:: -------------------
+:Lockout
+cls
+echo %RED%╔════════════════════════════════════════════════╗
+echo ║                  ⛔ ACCESS LOCKED                ║
+echo ╠════════════════════════════════════════════════╣%RESET%
+echo ║                                                ║
+echo ║         Too many failed attempts detected.      ║
+echo ║         Access locked for [X] minutes.          ║
+echo ║                                                ║
+echo ║           Please try again later.                ║
+echo ║                                                ║
+echo ╚════════════════════════════════════════════════╝
+pause
+goto MainMenu
+
+:: -------------------
+:OptionsMenu
+cls
+echo %CYAN%╔════════════════════════════════════════════════╗
+echo ║                  🛠️ USB CONTROL                  ║
+echo ╠════════════════════════════════════════════════╣%RESET%
+echo ║                                                ║
+echo %YELLOW%║  [1] ℹ️ USB Info                           ║
+echo │  [2] ⏏️ Eject USB                          ║
+echo │  [3] 🩺 Check USB Health                     ║
+echo │  [4] 💾 Backup USB Data                      ║
+echo │  [5] ♻️ Restore USB Data                     ║
+echo │  [6] 🛡️ Scan USB for Viruses                 ║
+echo │  [7] 🔒 Enable USB Write Protection          ║
+echo │  [8] 📊 Show USB Storage Usage               ║
+echo │  [9] 🔙 Back to Main Menu                    ║
+echo ║                                                ║
+echo │  ▶ Enter your choice and press [Enter]:      ║%RESET%
+set /p choice=^>
+if "%choice%"=="9" goto MainMenu
+:: For now just echo choice
+echo You chose option %choice%. (Feature not implemented)
+pause
+goto OptionsMenu
+
+:: -------------------
+:ActivityLogs
+cls
+echo %CYAN%╔════════════════════════════════════════════════╗
+echo ║                   📜 ACTIVITY LOGS               ║
+echo ╠════════════════════════════════════════════════╣%RESET%
+echo ║  Date       Time     Event                        ║
+echo ║─────────────────────────────────────────────── ║
+echo ║ 2025-08-02  14:23   Password attempt: Success    ║
+echo ║ 2025-08-02  14:25   Password attempt: Fail       ║
+echo ║ 2025-08-02  14:30   USB Ejected                   ║
+echo ║ 2025-08-02  14:45   Backup password used          ║
+echo ║ 2025-08-02  15:00   Admin login success           ║
+echo ║ 2025-08-02  15:15   USB Write Protection enabled  ║
+echo ║  ...                                              ║
+echo ║                                                  ║
+echo %YELLOW%║  [N] Next page      [P] Previous page          ║
+echo ║                                                  ║
+echo ║  Press [B] to go back to Main Menu             ║%RESET%
+set /p choice=^>
+if /i "%choice%"=="B" goto MainMenu
+:: Not implementing page navigation yet
+goto ActivityLogs
+
+:: -------------------
+:HelpAbout
+cls
+echo %CYAN%╔════════════════════════════════════════════════╗
+echo ║                    ❓ HELP / ABOUT               ║
+echo ╠════════════════════════════════════════════════╣%RESET%
+echo ║                                                ║
+echo ║  USB Password Protection v1.0                    ║
+echo ║                                                ║
+echo ║  Developed to secure your USB drives             ║
+echo ║  with strong password protection, backup         ║
+echo ║  options, and admin controls.                     ║
+echo ║                                                ║
+echo ║  Features:                                      ║
+echo ║    • Password & Backup Password                 ║
+echo ║    • Security Questions                          ║
+echo ║    • Email Verification Code                     ║
+echo ║    • Lockout Mechanism                           ║
+echo ║    • USB Control Options                         ║
+echo ║    • Activity Logs                               ║
+echo ║                                                ║
+echo ║  For support, visit:                             ║
+echo ║  www.example.com/support                         ║
+echo ║                                                ║
+echo %YELLOW%║  Press [B] to return to Main Menu               ║%RESET%
+set /p choice=^>
+if /i "%choice%"=="B" goto MainMenu
+goto HelpAbout
